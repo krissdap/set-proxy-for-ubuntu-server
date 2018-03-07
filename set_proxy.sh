@@ -17,6 +17,7 @@ fi
 
 # http_proxy variable in /etc/environment
 echo http_proxy="http://$esc_username:$password@$proxy" | sudo tee -a /etc/environment
+echo https_proxy="http://$esc_username:$password@$proxy" | sudo tee -a /etc/environment
 
 # apt (apt-get)
 apt_conf='/etc/apt/apt.conf'
@@ -59,6 +60,9 @@ else
 fi
 
 # git
-git_proxy_string='http://'$esc_username':'$password'@'$proxy
-git config --global http.proxy $git_proxy_string
+if [ -x "$(commmand -v git)" ]
+then
+	git_proxy_string='http://'$esc_username':'$password'@'$proxy
+	git config --global http.proxy $git_proxy_string
+fi
 
