@@ -41,7 +41,7 @@ then
 	if [ -z "$existing_proxy_lines" ]
 	then
 		echo sending proxy string $proxy_string to $apt_conf
-		echo $proxy_string >> $apt_conf
+		echo $proxy_string | sudo tee -a $apt_conf
 	else
 		echo "Existing proxy configuration"
 		echo $existing_proxy_lines
@@ -56,11 +56,11 @@ then
 	fi
 else
 	echo "apt.conf not exists, creating new file"
-	echo $proxy_string > $apt_conf
+	echo $proxy_string | sudo tee $apt_conf
 fi
 
 # git
-if [ -x "$(commmand -v git)" ]
+if [ -x "$(command -v git)" ]
 then
 	git_proxy_string='http://'$esc_username':'$password'@'$proxy
 	git config --global http.proxy $git_proxy_string
