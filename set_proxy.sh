@@ -62,7 +62,35 @@ fi
 # git
 if [ -x "$(command -v git)" ]
 then
-	git_proxy_string='http://'$esc_username':'$password'@'$proxy
+	if [ -z "$username" ]
+	then
+		git_proxy_string='http://'$proxy
+	else
+		if [ -z "$password" ]
+		then
+			git_proxy_string='http://'$esc_username'@'$proxy
+		else
+			git_proxy_string='http://'$esc_username':'$password'@'$proxy
+		fi
+	fi
 	git config --global http.proxy $git_proxy_string
+fi
+
+# npm
+if [ -x "$(command -v npm)" ]
+then
+	if [ -z "$username" ]
+	then
+		npm_proxy_string='http://'$proxy
+	else
+		if [ -z "$password" ]
+		then
+			npm_proxy_string='http://'$esc_username'@'$proxy
+		else
+			npm_proxy_string='http://'$esc_username':'$password'@'$proxy
+		fi
+	fi
+	npm_proxy_string='http://'$esc_username':'$password'@'$proxy
+	npm config set http-proxy $npm_proxy_string
 fi
 
